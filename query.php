@@ -52,6 +52,7 @@
 			font-size: 18px;
 			border: none;
 			outline: none;
+			margin-top: 40px;
 		}
 		input[type="submit"] {
 			padding: 10px 20px;
@@ -73,26 +74,76 @@
 			cursor: pointer;
 			width: calc(100% - 80px);
 		}
+		p.query__title {
+			position: absolute;
+			top: 40px;
+			left: 40px;
+			font-family: monospace;
+		}
+		p.output__title {
+			font-family: monospace;
+		}
+		td, th {
+		    border: 1px solid #353752;
+		    padding: 10px;
+		    text-align: center;
+		    margin: 0;
+		}
+		th {
+			background: #353752;
+		}
+
 	</style>
 </head>
 <body>
 	<div class="query__container">
 		<div class="query__inputs">
-			<form>
-				<textarea rows="15" cols="30" name="query">Welcome to query.php
-				Enter a query and click submit to execute it
-				</textarea>
+			<form method="post" action="query.php">
+				<p class="query__title">Write query here:</p>
+				<textarea rows="15" cols="30" name="query"></textarea>
 				<input type="submit" name="submit">
 			</form>
 		</div>
 		<div class="query__output">
-			<h1>Output will be shown here</h1>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p class="output__title">Output:</p>
+
+			<table>
+				<?php 
+				$db_connection = mysql_connect("localhost", "cs143", "");
+				if(!$db_connection) {
+				    $errmsg = mysql_error($db_connection);
+				    print "Connection failed: $errmsg <br />";
+				    exit(1);
+				}
+				mysql_select_db("CS143", $db_connection);
+				$input_query = $_POST["query"]; 
+				$query = mysql_real_escape_string($input_query, $db_connection);
+				$rs = mysql_query($query, $db_connection);
+				$i = 0;
+				echo "<tr>";
+				while ($i < mysql_num_fields($rs)) {
+				    $meta = mysql_fetch_field($rs, $i);
+				    if (!$meta) {
+				        print "No information available<br />\n";
+				    }
+				    print "<th>$meta->name</th>";
+				    $i++;
+				}
+				$i = 0;
+				print "</tr>";
+
+				while($row = mysql_fetch_row($rs)) {
+					print "<tr>";
+					while ($i < mysql_num_fields($rs)) {
+						print "<td> $row[$i] </td>";
+						$i++;
+					}
+					$i = 0;
+					print "</tr>";
+				}
+				mysql_close($db_connection);
+				?>
+			</table>
 		</div>
 	</div>
 </body>
