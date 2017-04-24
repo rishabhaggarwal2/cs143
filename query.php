@@ -98,7 +98,7 @@
 <body>
 	<div class="query__container">
 		<div class="query__inputs">
-			<form method="post" action="query.php">
+			<form method="get" action="query.php">
 				<p class="query__title">Write query here:</p>
 				<textarea rows="15" cols="30" name="query"></textarea>
 				<input type="submit" name="submit">
@@ -116,7 +116,7 @@
 				    exit(1);
 				}
 				mysql_select_db("CS143", $db_connection);
-				$input_query = $_POST["query"]; 
+				$input_query = $_GET["query"]; 
 				$query = mysql_real_escape_string($input_query, $db_connection);
 				$rs = mysql_query($query, $db_connection);
 				$i = 0;
