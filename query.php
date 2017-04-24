@@ -98,7 +98,7 @@
 <body>
 	<div class="query__container">
 		<div class="query__inputs">
-			<form method="get" action="query.php">
+			<form method="get" action="query.php" name="queryForm">
 				<p class="query__title">Write query here:</p>
 				<textarea rows="15" cols="30" name="query"></textarea>
 				<input type="submit" name="submit">
@@ -109,39 +109,41 @@
 
 			<table>
 				<?php 
-				$db_connection = mysql_connect("localhost", "cs143", "");
-				if(!$db_connection) {
-				    $errmsg = mysql_error($db_connection);
-				    print "Connection failed: $errmsg <br />";
-				    exit(1);
-				}
-				mysql_select_db("CS143", $db_connection);
-				$input_query = $_GET["query"]; 
-				$query = mysql_real_escape_string($input_query, $db_connection);
-				$rs = mysql_query($query, $db_connection);
-				$i = 0;
-				echo "<tr>";
-				while ($i < mysql_num_fields($rs)) {
-				    $meta = mysql_fetch_field($rs, $i);
-				    if (!$meta) {
-				        print "No information available<br />\n";
-				    }
-				    print "<th>$meta->name</th>";
-				    $i++;
-				}
-				$i = 0;
-				print "</tr>";
-
-				while($row = mysql_fetch_row($rs)) {
-					print "<tr>";
+				$param = $_GET["query"];
+				if($param) {
+					$db_connection = mysql_connect("localhost", "cs143", "");
+					if(!$db_connection) {
+					    $errmsg = mysql_error($db_connection);
+					    print "Connection failed: $errmsg <br />";
+					    exit(1);
+					}
+					mysql_select_db("CS143", $db_connection);
+					// $query = mysql_real_escape_string($param, $db_connection);
+					$rs = mysql_query($param, $db_connection);
+					$i = 0;
+					echo "<tr>";
 					while ($i < mysql_num_fields($rs)) {
-						print "<td> $row[$i] </td>";
-						$i++;
+					    $meta = mysql_fetch_field($rs, $i);
+					    if (!$meta) {
+					        print "No information available<br />\n";
+					    }
+					    print "<th>$meta->name</th>";
+					    $i++;
 					}
 					$i = 0;
 					print "</tr>";
+
+					while($row = mysql_fetch_row($rs)) {
+						print "<tr>";
+						while ($i < mysql_num_fields($rs)) {
+							print "<td> $row[$i] </td>";
+							$i++;
+						}
+						$i = 0;
+						print "</tr>";
+					}
+					mysql_close($db_connection);
 				}
-				mysql_close($db_connection);
 				?>
 			</table>
 		</div>
