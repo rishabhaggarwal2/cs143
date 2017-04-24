@@ -21,5 +21,18 @@ SELECT Movie.title
 	INNER JOIN Sales ON Movie.id = Sales.mid) 
 	WHERE Sales.ticketsSold > 1000000;
 
---Write two more queries!!!!!!
---Change data set to CS143!!!!!
+--The below two are queries aside from the questions
+
+-- Find names of all movies whose imdb ratings more than 98
+SELECT Movie.title
+	FROM (Movie 
+	INNER JOIN MovieRating ON Movie.id = MovieRating.mid) 
+	WHERE MovieRating.imdb > 98;
+
+-- Find names of directors whose movies have imdb ratings more than 98
+-- Realized that this doesn't show all movied from previous query because the MovieDirector data doesn't exist for all movies
+SELECT CONCAT(Director.first, ' ', Director.last)
+	FROM ((MovieDirector 
+	INNER JOIN Director ON MovieDirector.did = Director.id) 
+	INNER JOIN MovieRating ON MovieDirector.mid = MovieRating.mid) 
+	WHERE MovieRating.imdb > 98;
