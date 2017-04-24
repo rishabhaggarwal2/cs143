@@ -1,12 +1,12 @@
 CREATE TABLE Movie (
 	id INT,
-	title VARCHAR(100) NOT NULL,
+	title VARCHAR(100) NOT NULL, -- Every movie should have a title
 	year INT,
 	rating VARCHAR(10),
 	company VARCHAR(50),
 	PRIMARY KEY (id),
 	UNIQUE (id),
-	CHECK (year >= 0)
+	CHECK (year >= 0) -- The year of a movie should not be negative
 );
 
 
@@ -15,9 +15,10 @@ CREATE TABLE Actor (
 	last VARCHAR(20),
 	first VARCHAR(20),
 	sex VARCHAR(6),
-	dob DATE NOT NULL,
+	dob DATE NOT NULL, -- Date of Birth of an Actor should not be null
 	dod DATE,
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	UNIQUE (id)
 );
 
 
@@ -26,7 +27,7 @@ CREATE TABLE Sales (
 	ticketsSold INT,
 	totalIncome INT,
 	FOREIGN KEY (mid) references Movie(id),
-	CHECK (ticketsSold >= 0 AND totalIncome >= 0)
+	CHECK (ticketsSold >= 0 AND totalIncome >= 0) -- Any numeric value for sales should be positive
 ) ENGINE = INNODB;
 
 
@@ -34,8 +35,9 @@ CREATE TABLE Director (
 	id INT,
 	last VARCHAR(20),
 	first VARCHAR(20),
-	dob DATE NOT NULL,
-	dod DATE
+	dob DATE NOT NULL, -- A Director's DoB should not be null
+	dod DATE,
+	PRIMARY KEY (id)
 );
 
 
@@ -48,7 +50,9 @@ CREATE TABLE MovieGenre (
 
 CREATE TABLE MovieDirector (
 	mid INT,
-	did INT
+	did INT,
+	FOREIGN KEY (mid) REFERENCES Movie(id),
+    FOREIGN KEY (did) REFERENCES Director(id)
 ) ENGINE = INNODB;
 
 
@@ -76,7 +80,7 @@ CREATE TABLE Review (
 	rating INT,
 	comment VARCHAR(500),
 	FOREIGN KEY (mid) references Movie(id),
-	CHECK (rating >= 0)
+	CHECK (rating >= 0) -- A Review's rating value should be non-negative
 ) ENGINE = INNODB;
 
 
