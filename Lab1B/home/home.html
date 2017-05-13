@@ -1,5 +1,15 @@
-<p>This is the partial for view 1.</p>
-<div ng-repeat="actor in actors | limitTo: 20">
-	<img ng-src="{{actor.url}}" width="40px">
-	{{actor.first}} {{actor.last}}
+<div class="home__container">
+	<h1>Featured Movies</h1>
+	<div class="home__movies">
+		<div 
+			ng-repeat="actor in actors | limitTo: 10"
+			class="home__movie">
+			
+			<a href="#/movie/{{actor.id}}">
+				<img ng-src="{{actor.url}}">
+				<p>{{actor.first}}</p>
+			</a>
+
+		</div>
+	</div>
 </div>

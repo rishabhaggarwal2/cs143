@@ -13,23 +13,23 @@
     <link rel="stylesheet" href="app.css">
   </head>
   <body>
-    <navigation></navigation>
+    <navigation class="navigation"></navigation>
 
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-view></div>
-
-    <div>Angular seed app: v<span app-version></span></div>
+    <div ng-view class="page__container"></div>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
     -->
     <script src="scripts/angular.min.js"></script>
     <script src="scripts/angular-route.min.js"></script>
+    <script src="scripts/jquery.js"></script>
     <script src="app.js"></script>
     <script src="home/home.js"></script>
+    <script src="movie/movie.js"></script>
     <script src="navigation/navigation.js"></script>
   </body>
 </html>

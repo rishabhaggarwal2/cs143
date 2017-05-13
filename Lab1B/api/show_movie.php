@@ -9,7 +9,8 @@ if(!$db_connection) {
     exit(1);
 }
 mysql_select_db("CS143", $db_connection);
-$param = "SELECT title, year, id FROM Movie WHERE year > 2001 AND title != '13th Child' AND title != 'After School Special'";
+$id = $_GET["id"];
+$param = "SELECT title, year, id FROM Movie WHERE id = $id";
 $result = mysql_query($param, $db_connection);
 
 $outp = "";
